@@ -40,8 +40,8 @@ async def inlinequery(update: Update, context: CallbackContext) -> None:
         offset = int(update.inline_query.offset) if update.inline_query.offset else 0
 
         # Load 3 results per row
-        results_per_row = 4
-        results_per_page = 8
+        results_per_row = 400
+        results_per_page = 800
         start_index = offset
         end_index = offset + results_per_page
 
