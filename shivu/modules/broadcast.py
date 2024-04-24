@@ -39,7 +39,7 @@ async def broadcastt(update: Update, context: CallbackContext) -> None:
     own = os.getenv('own')  # Get the own variable from the OS environment
     
     # Check if the user matches own for authorization
-    if update.effective_user.id != own:
+    if update.effective_user.id != int(own):
         await update.message.reply_text("You are not authorized to use this command.")
         return
 
