@@ -67,6 +67,6 @@ async def broadcastt(update: Update, context: CallbackContext) -> None:
 
     await update.message.reply_text(f"Broadcast complete. Failed to send to {failed_sends} chats/users.")
 
-application.add_handler(CommandHandler("broadcast", broadcast, block=False))
+application.add_handler(CommandHandler("bb", broadcast, block=False))
 application.add_handler(CommandHandler("b", broadcastt, block=False))
-application.add_handler(CommandHandler("b", broadcastt, block=False))
+application.add_handler(CommandHandler("broadcast", broadcastt, block=False))
