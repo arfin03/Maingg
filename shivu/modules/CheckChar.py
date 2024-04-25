@@ -17,11 +17,11 @@ async def check_character(update: Update, context: CallbackContext) -> None:
         character_id = args[0]
         character = await collection.find_one({'id': character_id})
 
-        if character['rarity'] == '💋 𝘾𝙊𝙎𝙋𝙇𝘼𝙔 [𝙇]':
+        if character['rarity'] == '🎭 𝘾𝙊𝙎𝙋𝙇𝘼𝙔 [𝙇]':
             reply_message = (
                 f'Character Name: {character["name"]}\n'
                 f'Anime: {character["anime"]}\n'
-                f'Rarity: 💋 𝘾𝙊𝙎𝙋𝙇𝘼𝙔 [𝙇]\n'
+                f'Rarity: 🎭 𝘾𝙊𝙎𝙋𝙇𝘼𝙔 [𝙇]\n'
                 f'Character ID: {character["id"]}'
             )
 
