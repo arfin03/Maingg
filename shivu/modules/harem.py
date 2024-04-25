@@ -35,6 +35,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
         "christmas": "🎄 Christmas",
         "valentine": "💘 Valentine",
         "x_valentine": "💋 [𝙓] 𝙑𝙚𝙧𝙨𝙚",
+        "cosplay": "🎭 𝘾𝙊𝙎𝙋𝙇𝘼𝙔 [𝙇]",
         "18+": "🔞 NSFW"
     }
 
@@ -182,6 +183,7 @@ async def set_hmode(update: Update, context: CallbackContext) -> None:
         [
             InlineKeyboardButton("˹ 🎐 ˼ ℭ𝔢𝔩𝔢𝔰𝔱𝔦𝔞𝔩", callback_data="celestial"),
             InlineKeyboardButton("💋 [𝙓] 𝙑𝙚𝙧𝙨𝙚", callback_data="x_valentine"),
+            InlineKeyboardButton("🎭 𝘾𝙊𝙎𝙋𝙇𝘼𝙔 [𝙇]", callback_data="cosplay"),
             InlineKeyboardButton("🔞 NSFW", callback_data="18+"),
             
            
