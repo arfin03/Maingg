@@ -46,7 +46,7 @@ async def harem(update: Update, context: CallbackContext, page=0) -> None:
                 harem_message += f'\n➥ <b>{formatted_id}</b> | {character["rarity"][0]} | {character["name"]} ×{count}'
                 
         total_count = len(user['characters'])
-        keyboard = [[InlineKeyboardButton(f"HAREM ({total_count})", switch_inline_query_current_chat=f"collection.{user_id}")]]
+        keyboard = [[InlineKeyboardButton(f"一═デ︻ нαяєм ︻デ═一 ({total_count})", switch_inline_query_current_chat=f"collection.{user_id}")]]
 
         if total_pages > 1:
             nav_buttons = []
