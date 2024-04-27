@@ -115,10 +115,6 @@ async def on_callback_query(client, callback_query):
 
 
 
-
-pending_gifts = {}
-
-
 @shivuu.on_message(filters.command("gift"))
 async def gift(client, message):
     sender_id = message.from_user.id
@@ -135,28 +131,36 @@ async def gift(client, message):
         await message.reply_text("You can't gift a character to yourself!")
         return
 
-    if len(message.command) != 2:
-        await message.reply_text("You need to provide a character ID!")
+    if len(message.command) < 2:
+        await message.reply_text("You need to provide at least one character ID to gift!")
         return
 
-    character_id = message.command[1]
+    character_ids = message.command[1:]
 
     sender = await user_collection.find_one({'id': sender_id})
 
-    character = next((character for character in sender['characters'] if character['id'] == character_id), None)
+    characters_to_gift = []
+    characters_not_found = []
 
-    if not character:
-        await message.reply_text("You don't have this character in your collection!")
+    for character_id in character_ids:
+        character = next((char for char in sender['characters'] if char['id'] == character_id), None)
+        if character:
+            characters_to_gift.append(character)
+        else:
+            characters_not_found.append(character_id)
+
+    if characters_not_found:
+        await message.reply_text(f"You don't have the following characters in your collection: {', '.join(characters_not_found)}")
         return
 
-    
     pending_gifts[(sender_id, receiver_id)] = {
-        'character': character,
+        'characters': characters_to_gift,
         'receiver_username': receiver_username,
         'receiver_first_name': receiver_first_name
     }
 
-    
+    gift_list = "\n".join([f"{index + 1}. ({char['id']}) - {char['name'].lower()}" for index, char in enumerate(characters_to_gift)])
+
     keyboard = InlineKeyboardMarkup(
         [
             [InlineKeyboardButton("Confirm Gift", callback_data="confirm_gift")],
@@ -164,14 +168,13 @@ async def gift(client, message):
         ]
     )
 
-    await message.reply_text(f"do You Really Wanns To Gift {message.reply_to_message.from_user.mention} ?", reply_markup=keyboard)
+    await message.reply_text(f"Do you really want to gift the following characters to {message.reply_to_message.from_user.mention}?\n\n{gift_list}", reply_markup=keyboard)
 
 @shivuu.on_callback_query(filters.create(lambda _, __, query: query.data in ["confirm_gift", "cancel_gift"]))
-async def on_callback_query(client, callback_query):
+async def on_gift_callback(client, callback_query):
     sender_id = callback_query.from_user.id
 
-    
-    for (_sender_id, receiver_id), gift in pending_gifts.items():
+    for (_sender_id, receiver_id), gift_info in pending_gifts.items():
         if _sender_id == sender_id:
             break
     else:
@@ -179,28 +182,32 @@ async def on_callback_query(client, callback_query):
         return
 
     if callback_query.data == "confirm_gift":
-        
         sender = await user_collection.find_one({'id': sender_id})
-        receiver = await user_collection.find_one({'id': receiver_id})
+        receiver_id = gift_info['receiver_id']
 
-        
-        sender['characters'].remove(gift['character'])
+        characters_to_gift = gift_info['characters']
+
+        for character in characters_to_gift:
+            sender['characters'].remove(character)
+
         await user_collection.update_one({'id': sender_id}, {'$set': {'characters': sender['characters']}})
 
-        
+        receiver = await user_collection.find_one({'id': receiver_id})
+
         if receiver:
-            await user_collection.update_one({'id': receiver_id}, {'$push': {'characters': gift['character']}})
+            receiver['characters'].extend(characters_to_gift)
+            await user_collection.update_one({'id': receiver_id}, {'$set': {'characters': receiver['characters']}})
         else:
-            
             await user_collection.insert_one({
                 'id': receiver_id,
-                'username': gift['receiver_username'],
-                'first_name': gift['receiver_first_name'],
-                'characters': [gift['character']],
+                'username': gift_info['receiver_username'],
+                'first_name': gift_info['receiver_first_name'],
+                'characters': characters_to_gift,
             })
 
-        
         del pending_gifts[(sender_id, receiver_id)]
 
-        await callback_query.message.edit_text(f"You have successfully gifted your character to [{gift['receiver_first_name']}](tg://user?id={receiver_id})!")
-
+        await callback_query.message.edit_text(f"You have successfully gifted your characters to {gift_info['receiver_first_name']}!")
+    elif callback_query.data == "cancel_gift":
+        del pending_gifts[(sender_id, receiver_id)]
+        await callback_query.message.edit_text("The gift has been canceled.")
