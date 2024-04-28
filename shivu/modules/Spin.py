@@ -10,7 +10,6 @@ r = redis.Redis(
     port=13192,
     password='wKgGC52NC9NRhic36fDIvWh76dngPvP9')
 
-
 async def spin(update: Update, context: CallbackContext) -> None:
     try:
         args = context.args
