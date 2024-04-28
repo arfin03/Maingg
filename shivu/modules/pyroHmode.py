@@ -61,6 +61,6 @@ async def button_callback_handler(client, callback_query: CallbackQuery):
     user_harem_modes[user_id] = data
     try:
         await callback_query.answer(text=f"You set your harem mode to {harem_mode_mapping.get(data)}")
-        await callback_query.edit_message_caption(f"You set your harem mode to {harem_mode_mapping.get(data)}")
+    
     except Exception as e:
         print(e)
