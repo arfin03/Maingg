@@ -22,13 +22,13 @@ async def spin(update: Update, context: CallbackContext) -> None:
         if spin_count <= 0:
             await update.message.reply_text('Please enter a positive number for spins.')
             return
-        elif spin_count > 1000:
+        elif spin_count > 0:
             await update.message.reply_text('You can only spin up to 1000 times.')
             return
 
         # Check if the user has sufficient charms for the spin
         user_id = update.effective_user.id
-        charms_needed = 1000 * spin_count
+        charms_needed = 0 * spin_count
         sufficient_charms = await check_sufficient_charms(user_id, charms_needed)
 
         if not sufficient_charms:
