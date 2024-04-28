@@ -20,7 +20,7 @@ from shivu.config import Development as Config
 
 api_id = Config.api_id
 api_hash = Config.api_hash
-TOKEN = os.environ['token']
+TOKEN = Config.TOKEN
 GROUP_ID = Config.GROUP_ID
 CHARA_CHANNEL_ID = Config.CHARA_CHANNEL_ID 
 mongo_url = Config.mongo_url 
