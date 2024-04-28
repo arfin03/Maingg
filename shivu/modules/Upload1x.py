@@ -1,4 +1,4 @@
-"""import urllib.request
+import urllib.request
 import telegraph
 from pymongo import ReturnDocument
 
@@ -112,4 +112,4 @@ SUBMIT_HANDLER = CommandHandler('submit', submit, block=False)
 application.add_handler(SUBMIT_HANDLER)
 
 END_HANDLER = CommandHandler('end', end, block=False)
-application.add_handler(END_HANDLER)"""
+application.add_handler(END_HANDLER)
