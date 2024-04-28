@@ -12,8 +12,8 @@ class Config(object):
     UPDATE_CHAT = "chuTiyaSupport"
     BOT_USERNAME = "graBxWaifuRobot"
     CHARA_CHANNEL_ID = "-1002111937813"
-    api_id = 28213806
-    api_hash = "8f80142dfef1a696bee7f6ab4f6ece35"
+    api_id = 26626068
+    api_hash = "bf423698bcbe33cfd58b11c78c42caa2"
 
     
 class Production(Config):
