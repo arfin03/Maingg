@@ -10,12 +10,11 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from shivu import collection, user_collection, application
 import redis
 
-# Redis connection setup
+# Redis connection 
 r = redis.Redis(
     host='redis-13192.c282.east-us-mz.azure.cloud.redislabs.com',
     port=13192,
-    password='wKgGC52NC9NRhic36fDIvWh76dngPvP9'
-)
+    password='wKgGC52NC9NRhic36fDIvWh76dngPvP9'))
 
 async def harem(update: Update, context: CallbackContext, page=0) -> None:
     user_id = update.effective_user.id
